@@ -36,6 +36,12 @@ export function initMixin (Vue: Class<Component>) {
       initInternalComponent(vm, options)
     } else {
       vm.$options = mergeOptions(
+        /*
+         * zrefrain
+         * 注意这里的 vm.construct，vm（也就是 this）其实指向的就是 Vue 函数，vm.construct 等于 Vue.prototype.construct
+         * 而 Vue.prototype.construct === Vue // true（可在 Vue 官网验证），传入 resolveConstructorOptions 中的也就是 Vue.options（global-api 中的）
+         * 具体查看 《你不知道的 JavaScript —— 上》Page 149
+         */
         resolveConstructorOptions(vm.constructor),
         options || {},
         vm
