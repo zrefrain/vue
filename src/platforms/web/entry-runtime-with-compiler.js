@@ -21,6 +21,11 @@ Vue.prototype.$mount = function (
 ): Component {
   el = el && query(el)
 
+  /*
+   * zrefrain
+   * 这里的注释 istanbul ignore if 是为了忽略 if 的代码，从而不计入代码覆盖率的计算中
+   * 参考资料：http://www.ruanyifeng.com/blog/2015/06/istanbul.html
+   */
   /* istanbul ignore if */
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(

@@ -245,6 +245,15 @@ function genConfig (name) {
   Object.keys(featureFlags).forEach(key => {
     vars[`process.env.${key}`] = featureFlags[key]
   })
+
+  /*
+   * zrefrain
+   * 使用 rollup-plugin-replace 插件设置 process.env.NODE_ENV 的值
+   *
+   * 补充：npm run build 时，应该是把上面 builds 对象都执行了一遍（结合 build.js 和本文件最下面一段 if 代码去看）
+   * 从而生成对应的 vue.js、vue.min.js、vue.esm.js 的文件（没有完整地梳理，只是简单看了一下得出的结论）
+   */
+
   // build-specific env
   if (opts.env) {
     vars['process.env.NODE_ENV'] = JSON.stringify(opts.env)
