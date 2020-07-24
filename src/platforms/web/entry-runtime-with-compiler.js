@@ -101,6 +101,13 @@ function getOuterHTML (el: Element): string {
   }
 }
 
+/**
+ * zrefrain
+ * 没搞明白 compile 具体用来干嘛
+ * 相关 Vue 文档：
+ * 1. https://cn.vuejs.org/v2/api/#Vue-compile
+ * 2. https://cn.vuejs.org/v2/guide/render-function.html#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91
+ */
 Vue.compile = compileToFunctions
 
 export default Vue

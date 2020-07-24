@@ -30,17 +30,26 @@ export function initMixin (Vue: Class<Component>) {
     vm._isVue = true
     // merge options
     if (options && options._isComponent) {
+      /**
+       * zrefrain
+       * 优化内部组件实例化，因为动态 options 合并比较慢，且内部组件 options 不需要特殊处理
+       */
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
       initInternalComponent(vm, options)
     } else {
       vm.$options = mergeOptions(
-        /*
+        /**
          * zrefrain
-         * 注意这里的 vm.construct，vm（也就是 this）其实指向的就是 Vue 函数，vm.construct 等于 Vue.prototype.construct
-         * 而 Vue.prototype.construct === Vue // true（可在 Vue 官网验证），传入 resolveConstructorOptions 中的也就是 Vue.options（global-api 中的）
-         * 具体查看 《你不知道的 JavaScript —— 上》Page 149
+         * 这里 vm.constructor 中的 vm（也就是 this）
+         * 在 new Vue(options) 时指向 instance/index.js Vue 函数中 this._init(options) 的 this
+         * 而 this._init 中的 this 指向，也就是 new 操作时生成的新对象，等同于 new 操作生成的实例，如：v = new Vue(...) 中的实例 v
+         * vm.construct 等于 v.__proto__.constructor，也等于 Vue.prototype.constructor
+         * 而函数原型默认的 constructor 属性，引用的就是函数本身，Vue.prototype.constructor === Vue // true（可在 Vue 官网验证）
+         * 传入 resolveConstructorOptions 中的 vm.constructor 也就是 Vue.prototype.constructor.options
+         *
+         * 具体参考 《你不知道的 JavaScript —— 上》 Page 91、149
          */
         resolveConstructorOptions(vm.constructor),
         options || {},
