@@ -7,6 +7,13 @@ export function initAssetRegisters (Vue: GlobalAPI) {
   /**
    * Create asset registration methods.
    */
+
+  /*
+   * zrefrain
+   * 这里是挂载 Vue 的静态方法（Vue 文档称为全局方法） Component、directive、filter，记录一下 component 的逻辑
+   * 看完这个函数，Vue.component() 执行后会把其定义好的内容，挂载到 Vue.options.components 上去，验证之后果然如此
+   */
+
   ASSET_TYPES.forEach(type => {
     Vue[type] = function (
       id: string,

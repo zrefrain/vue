@@ -256,6 +256,17 @@ function genConfig (name) {
 
   // build-specific env
   if (opts.env) {
+    /*
+     * zrefrain
+     * 这里为什么要用 JSON.stringify？在 webpack 的文档中找到了相似的解释为：
+     * 插件会直接替换文本，因此提供的值必须在字符串本身内部包含 引号（""），可以使用 '"production"' 或 JSON.stringify('production') 来完成
+     *
+     *（明明是 rollup，为什么看 webpack 文档，就顺着 vue-music 项目去查其中关于 process.env.NODE_ENV 的时候正好看到了 -_-）
+     *
+     * 参考资料：
+     * 1. https://webpack.docschina.org/plugins/define-plugin/
+     * 2. https://github.com/rollup/plugins/tree/master/packages/replace（这个没怎么解释，就说了复杂值要用 JSON.stringify，且版本应该不同）
+     */
     vars['process.env.NODE_ENV'] = JSON.stringify(opts.env)
   }
   config.plugins.push(replace(vars))
