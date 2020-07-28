@@ -47,7 +47,7 @@ export function initMixin (Vue: Class<Component>) {
          * 而 this._init 中的 this 指向，也就是 new 操作时生成的新对象，等同于 new 操作生成的实例，如：v = new Vue(...) 中的实例 v
          * vm.construct 等于 v.__proto__.constructor，也等于 Vue.prototype.constructor
          * 而函数原型默认的 constructor 属性，引用的就是函数本身，Vue.prototype.constructor === Vue // true（可在 Vue 官网验证）
-         * 传入 resolveConstructorOptions 中的 vm.constructor 也就是 Vue.prototype.constructor.options
+         * 传入 resolveConstructorOptions 中的 vm.constructor 也就是 Vue.prototype.constructor.options，也就是 Vue
          *
          * 具体参考 《你不知道的 JavaScript —— 上》 Page 91、149
          */
@@ -66,6 +66,10 @@ export function initMixin (Vue: Class<Component>) {
     vm._self = vm
     initLifecycle(vm)
     initEvents(vm)
+    /**
+     * zrefrain
+     * initRender(vm) 的调用位置发生过变化，详细看下面的注释
+     */
     initRender(vm)
     callHook(vm, 'beforeCreate')
     initInjections(vm) // resolve injections before data/props
@@ -80,6 +84,15 @@ export function initMixin (Vue: Class<Component>) {
       measure(`vue ${vm._name} init`, startTag, endTag)
     }
 
+    /**
+     * zrefrain
+     * 看的文章分析的是 2.1.7 版本的，但最新版本的源代码，把下面的代码从 initRender 提出来了
+     * initRender 顺序也从 callHook(vm, 'created') 后面提取到了 callHook(vm, 'beforeCreate') 前，具体原因不理解
+     * 参考资料：https://github.com/vuejs/vue/commit/7131bc48155fb5224f4d6f0fb1c4b7eed6a79db4
+     *
+     * 其他：这也就是为什么 new Vue({...}) 不传 el 需要手动 vm.$mount() 开启编译
+     * 参考资料：https://cn.vuejs.org/v2/api/#el
+     */
     if (vm.$options.el) {
       vm.$mount(vm.$options.el)
     }
@@ -106,6 +119,10 @@ export function initInternalComponent (vm: Component, options: InternalComponent
 }
 
 export function resolveConstructorOptions (Ctor: Class<Component>) {
+  /**
+   * zrefrain
+   * 也就是 Vue.options
+   */
   let options = Ctor.options
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)

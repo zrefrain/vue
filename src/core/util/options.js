@@ -50,6 +50,10 @@ function mergeData (to: Object, from: ?Object): Object {
   if (!from) return to
   let key, toVal, fromVal
 
+  /**
+   * zrefrain
+   * Reflect.ownKeys 返回对象的所有属性（包括 Symbol 属性），Object 则不包含 Symbol 属性
+   */
   const keys = hasSymbol
     ? Reflect.ownKeys(from)
     : Object.keys(from)

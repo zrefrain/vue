@@ -6,7 +6,7 @@
     <!-- Delete ".min" for console warnings in development -->
     <script src="https://unpkg.com/lodash@4.16.0"></script>
     <script src="https://unpkg.com/marked@0.3.6"></script>
-    <script src="../dist/vue.js"></script>
+    <script src="../../dist/vue.js"></script>
   </head>
   <body>
 
@@ -16,8 +16,14 @@
     </div>
 
     <script>
-      new Vue({
+      var vm = new Vue({
         el: '#editor',
+        props: {
+          check: {
+            type: Boolean,
+            default: false
+          }
+        },
         data: {
           input: '# hello'
         },
@@ -32,6 +38,8 @@
           }, 300)
         }
       })
+
+      console.log(vm)
 
       // 上面的内容不重要，是赋值其他 example 文件，用来执行 new Vue 观察流程用的
       Vue.component('anchored-heading', {
