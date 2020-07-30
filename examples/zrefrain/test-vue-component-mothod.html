@@ -25,7 +25,8 @@
           }
         },
         data: {
-          input: '# hello'
+          input: '# hello',
+          checks: ''  // 好像是用来确认 vm._data 是否会同步属性（忘了，但记得是没什么意义的，先留着）
         },
         computed: {
           compiledMarkdown: function () {
@@ -36,10 +37,21 @@
           update: _.debounce(function (e) {
             this.input = e.target.value
           }, 300)
-        }
+        },
+        /**
+         * template、render 存在会替换掉 el: '#editor' 元素，render 优先级比 template 更高
+         * 参考资料：https://cn.vuejs.org/v2/api/#%E9%80%89%E9%A1%B9-DOM
+         */
+        // template: `<ul><li>{{input}}</li></ul>`,
+        // render: function(createElement) {
+        //   return createElement('ul', [
+        //     createElement('li', this.input),
+        //     createElement('li', this.input)
+        //   ])
+        // }
       })
 
-      console.log(vm)
+      console.log('example---- vm', vm)
 
       // 上面的内容不重要，是赋值其他 example 文件，用来执行 new Vue 观察流程用的
       Vue.component('anchored-heading', {
@@ -58,7 +70,7 @@
       })
 
       // achored-heading 组件确实会出现在其中
-      console.log('Vue.options.components', Vue.options.components)
+      console.log('example---- Vue.options.components', Vue.options.components)
     </script>
 
   </body>

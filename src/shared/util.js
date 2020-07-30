@@ -140,6 +140,11 @@ export function remove (arr: Array<any>, item: any): Array<any> | void {
 }
 
 /**
+ * zrefrain
+ * ({}).hasOwnProperty === Object.prototype.hasOwnProperty // true
+ * 都是对同一个函数的引用
+ */
+/**
  * Check whether an object has the property.
  */
 const hasOwnProperty = Object.prototype.hasOwnProperty

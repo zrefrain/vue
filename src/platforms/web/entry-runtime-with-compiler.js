@@ -40,6 +40,13 @@ Vue.prototype.$mount = function (
     let template = options.template
     if (template) {
       if (typeof template === 'string') {
+        /**
+         * zrefrain
+         * # 开始当作选择符，使用匹配元素的 innerHTML 作为模板
+         * 参考资料：
+         * 1. https://cn.vuejs.org/v2/api/#template
+         * 2. https://cn.vuejs.org/v2/guide/components-edge-cases.html#X-Template
+         */
         if (template.charAt(0) === '#') {
           template = idToTemplate(template)
           /* istanbul ignore if */
@@ -50,6 +57,10 @@ Vue.prototype.$mount = function (
             )
           }
         }
+        /*
+         * zrefrain
+         * template.nodeType？这是指什么？没搞懂这个判断，文档里 template 的类型描述是 string 啊
+         */
       } else if (template.nodeType) {
         template = template.innerHTML
       } else {
@@ -92,6 +103,11 @@ Vue.prototype.$mount = function (
  * of SVG elements in IE as well.
  */
 function getOuterHTML (el: Element): string {
+  /**
+   * zrefrain
+   * outerHTML DOM 接口获取当前元素及其后代的序列化 HTML，innerHTML 获取后代（不包括当前元素）
+   * 参考链接：https://developer.mozilla.org/zh-CN/docs/Web/API/Element/outerHTML
+   */
   if (el.outerHTML) {
     return el.outerHTML
   } else {

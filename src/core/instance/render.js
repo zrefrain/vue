@@ -88,6 +88,11 @@ export function renderMixin (Vue: Class<Component>) {
       // separately from one another. Nested component's render fns are called
       // when parent component is patched.
       currentRenderingInstance = vm
+      /**
+       * zrefrain
+       * render 也就是 vm.$option.render 在 entry-rutime-with-compiler 中通过 compileToFunctions 编译而来
+       * vm._renderProxy 在 core/instance/init.js 中定义为 vm（所以为什么不直接传 vm？）
+       */
       vnode = render.call(vm._renderProxy, vm.$createElement)
     } catch (e) {
       handleError(e, vm, `render`)
@@ -124,6 +129,7 @@ export function renderMixin (Vue: Class<Component>) {
     }
     // set parent
     vnode.parent = _parentVnode
+    console.log('vnode', vnode)
     return vnode
   }
 }

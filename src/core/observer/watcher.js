@@ -78,6 +78,7 @@ export default class Watcher {
     // parse expression for getter
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
+      console.log('getter', this.getter)
     } else {
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
@@ -90,6 +91,7 @@ export default class Watcher {
         )
       }
     }
+    console.log('lazy', this.lazy)
     this.value = this.lazy
       ? undefined
       : this.get()
