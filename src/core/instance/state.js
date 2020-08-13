@@ -35,6 +35,12 @@ const sharedPropertyDefinition = {
   set: noop
 }
 
+/**
+ * zrefrain
+ * Object.defineProperty(obj, 'key', {get: ..., set: ...})，这样设置 Setter、Getter 时
+ * 对象 obj 是会有 key 属性的，如：{key: ...}（自己一开始认为 get、set 通过其他属性去代理，obj 就不会存在 key 属性）
+ * 可以通过断点下面 initData 中调用 proxy 函数去 Chrome 看作用域模块，vm 实例上的相关属性是 defineProperty 后出现的
+ */
 export function proxy (target: Object, sourceKey: string, key: string) {
   sharedPropertyDefinition.get = function proxyGetter () {
     return this[sourceKey][key]

@@ -109,6 +109,12 @@ export function createComponent (
     return
   }
 
+  /**
+   * zrefrain
+   * context 为 vm 实例，可从 initRender 中的 createElement 定义开始追溯
+   * vm.$options._base 的指向为 Vue.options._base
+   * Vue.options._base = Vue，在 global-api/index.js 中定义，在 instance/init.js 中 merge 到实例 vm 的 $option 上
+   */
   const baseCtor = context.$options._base
 
   // plain options object: turn it into a constructor
