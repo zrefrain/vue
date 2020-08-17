@@ -187,6 +187,10 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
+    /**
+     * zrefrain
+     * updateComponent 执行的位置在 new Watcher 中的 this.get() 方法中调用 this.getter
+     */
     updateComponent = () => {
       vm._update(vm._render(), hydrating)
     }

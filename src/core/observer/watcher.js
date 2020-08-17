@@ -76,9 +76,12 @@ export default class Watcher {
       ? expOrFn.toString()
       : ''
     // parse expression for getter
+    /**
+     * zrefrain
+     * this.getter 等于 lifecycle 中 mountComponent 方法中定义的 updateComponent 方法
+     */
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
-      console.log('getter', this.getter)
     } else {
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
@@ -91,7 +94,12 @@ export default class Watcher {
         )
       }
     }
-    console.log('lazy', this.lazy)
+
+    /**
+     * zrefrain
+     * 这里调用 this.get()，this.get() 中调用了 this.getter.call(vm, vm)
+     * 也就是调用了 updateComponent 方法，vm._update(vm._render, hydrating) 也就是在这触发执行的
+     */
     this.value = this.lazy
       ? undefined
       : this.get()

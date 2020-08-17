@@ -31,6 +31,10 @@ export function initRender (vm: Component) {
   vm._c = (a, b, c, d) => createElement(vm, a, b, c, d, false)
   // normalization is always applied for the public version, used in
   // user-written render functions.
+  /**
+   * zrefrain
+   * vm.$createElement 在 this._init() 方法中调用 initRender 执行绑定
+   */
   vm.$createElement = (a, b, c, d) => createElement(vm, a, b, c, d, true)
 
   // $attrs & $listeners are exposed for easier HOC creation.
@@ -66,6 +70,12 @@ export function renderMixin (Vue: Class<Component>) {
     return nextTick(fn, this)
   }
 
+  /**
+   * zrefrain
+   * _render 在 instance/index.js 中 renderMixin() 中执行绑定
+   * _render 的定义是先于 vm.$createElement 的
+   * 捋了一下，其实先后也不会导致执行出错，因为 this._init() 最后执行 vm.$mount(el) 时，这两个方法都已经定义了
+   */
   Vue.prototype._render = function (): VNode {
     const vm: Component = this
     const { render, _parentVnode } = vm.$options
