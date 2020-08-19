@@ -87,6 +87,10 @@ export function _createElement (
     data.scopedSlots = { default: children[0] }
     children.length = 0
   }
+  /**
+   * zrefrain
+   * 两个方法意在把 children 数组拍平成一维数组
+   */
   if (normalizationType === ALWAYS_NORMALIZE) {
     children = normalizeChildren(children)
   } else if (normalizationType === SIMPLE_NORMALIZE) {

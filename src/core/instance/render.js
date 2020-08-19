@@ -107,6 +107,9 @@ export function renderMixin (Vue: Class<Component>) {
        * 再补充一个 new Vue() 时 render 的写法，帮助理解下面这段话
        * render: function(createElement) { return createElement('h1', this.$slot.default, ...) }
        * 参考链接：https://cn.vuejs.org/v2/guide/render-function.html
+       *
+       * 再补充
+       * vnode 由 vm.$createElement 产生，也就是 create-element.js 中的逻辑
        */
       vnode = render.call(vm._renderProxy, vm.$createElement)
     } catch (e) {

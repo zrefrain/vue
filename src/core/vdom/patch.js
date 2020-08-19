@@ -163,6 +163,10 @@ export function createPatchFunction (backend) {
         }
       }
 
+      /**
+       * zrefrain
+       * nodeOps 创建真实 dom
+       */
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
@@ -188,10 +192,18 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
+        /**
+         * zrefrain
+         * createChildren 递归调用 createElm 插入子节点，先插入子节点再插入父节点
+         */
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
+        /**
+         * zrefrain
+         * insert 是插入节点的方法
+         */
         insert(parentElm, vnode.elm, refElm)
       }
 
@@ -747,6 +759,10 @@ export function createPatchFunction (backend) {
         const oldElm = oldVnode.elm
         const parentElm = nodeOps.parentNode(oldElm)
 
+        /**
+         * zrefrain
+         * 把 vnode 挂载到真实 dom 上（视频里说的）
+         */
         // create new node
         createElm(
           vnode,
@@ -789,6 +805,10 @@ export function createPatchFunction (backend) {
         }
 
         // destroy old node
+        /**
+         * zrefrain
+         * createElm 中调用的 insert 方法，是向 oldElm 的父节点插入生成的真实 dom，所以要把之前的节点删掉，例如 div.app
+         */
         if (isDef(parentElm)) {
           removeVnodes([oldVnode], 0, 0)
         } else if (isDef(oldVnode.tag)) {
