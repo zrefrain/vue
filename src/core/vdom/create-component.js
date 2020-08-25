@@ -118,6 +118,10 @@ export function createComponent (
   const baseCtor = context.$options._base
 
   // plain options object: turn it into a constructor
+  /**
+   * zrefrain
+   * Ctor 为组件构造器
+   */
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
   }
@@ -193,6 +197,12 @@ export function createComponent (
 
   // return a placeholder vnode
   const name = Ctor.options.name || tag
+  /**
+   * zrefrain
+   * render: function(createElement(tag, data, ...)) 中声明的 data 数据对象
+   * 经过 installComponentHooks 在该 data 数据对象上增加 hook 属性，也就是组件相关的钩子函数
+   * 最终 data 数据对象通过 new VNode 构造函数，绑定在 vnode 实例上，所以 patch.js 中可以通过 vnode.data 获取 data 数据对象
+   */
   const vnode = new VNode(
     `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
     data, undefined, undefined, undefined, context,
@@ -236,6 +246,11 @@ function installComponentHooks (data: VNodeData) {
     const existing = hooks[key]
     const toMerge = componentVNodeHooks[key]
     if (existing !== toMerge && !(existing && existing._merged)) {
+      /**
+       * zrefrain
+       * existing 也就是 data.hook[key] 和 toMerge 之间的合并，是两个函数的合并
+       * 函数合并的策略就是返回一个函数，返回的函数把这两个函数都执行一遍（妙），见下方代码
+       */
       hooks[key] = existing ? mergeHook(toMerge, existing) : toMerge
     }
   }

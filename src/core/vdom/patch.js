@@ -141,6 +141,12 @@ export function createPatchFunction (backend) {
     }
 
     vnode.isRootInsert = !nested // for transition enter check
+    /**
+     * zrefrain
+     * 最后返回的 patch 函数一定会执行 createElm 函数，组件类型和普通类型 patch 的区别就在于这个 createComponent
+     * 注意：这里的 createComponent 是该文件内的函数，而不是 create-component.js 中的，自己总容易搞混
+     * tips：create-element.js 和 create-component.js 是在 vm._render() 时用于创建 VNode 实例的（self）
+     */
     if (createComponent(vnode, insertedVnodeQueue, parentElm, refElm)) {
       return
     }

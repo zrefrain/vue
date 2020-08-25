@@ -21,6 +21,10 @@ export function initExtend (Vue: GlobalAPI) {
     const Super = this
     const SuperId = Super.cid
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
+    /**
+     * zrefrain
+     * 下次引入同一个组件进行渲染时，走之前缓存的 Sub 构造函数，就不用再生成一次了
+     */
     if (cachedCtors[SuperId]) {
       return cachedCtors[SuperId]
     }

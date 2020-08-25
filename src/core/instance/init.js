@@ -33,6 +33,7 @@ export function initMixin (Vue: Class<Component>) {
       /**
        * zrefrain
        * 优化内部组件实例化，因为动态 options 合并比较慢，且内部组件 options 不需要特殊处理
+       * 补充：create-component.js 中的 createComponentInstanceForVnode 函数调用可进入该判断，其设置了 options._isComponent 为 true
        */
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
@@ -100,12 +101,21 @@ export function initMixin (Vue: Class<Component>) {
 }
 
 export function initInternalComponent (vm: Component, options: InternalComponentOptions) {
+  /**
+   * zrefrain
+   * vm.constructor 也就是 extend.js 中声明的 Sub 构造函数 VueComponent
+   */
   const opts = vm.$options = Object.create(vm.constructor.options)
   // doing this because it's faster than dynamic enumeration.
   const parentVnode = options._parentVnode
   opts.parent = options.parent
   opts._parentVnode = parentVnode
 
+  /**
+   * zrefrain
+   * parentVnode 在 create-component.js 的 createComponentInstanceForVnode 函数中可以找到定义
+   * parentVnode.componentOptions 相关的定义也在 create-component.js 中，createComponent 函数中的 new VNode 处
+   */
   const vnodeComponentOptions = parentVnode.componentOptions
   opts.propsData = vnodeComponentOptions.propsData
   opts._parentListeners = vnodeComponentOptions.listeners
