@@ -460,6 +460,12 @@ export function resolveAsset (
   if (hasOwn(assets, camelizedId)) return assets[camelizedId]
   const PascalCaseId = capitalize(camelizedId)
   if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId]
+  /**
+   * zrefrain
+   * 解释下下面为什么是找一遍原型链
+   * 因为 hasOwn 使用的是 Object.prototype.hasOwnProperty 方法，不查找原型链上的属性
+   * 所以下面的操作叫找一遍原型链（注意，上面的 if 判断，如果是原型链上的属性，是不会进入 if 语句的）
+   */
   // fallback to prototype chain
   const res = assets[id] || assets[camelizedId] || assets[PascalCaseId]
   if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
