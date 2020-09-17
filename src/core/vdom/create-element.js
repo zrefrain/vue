@@ -89,7 +89,7 @@ export function _createElement (
   }
   /**
    * zrefrain
-   * 两个方法意在把 children 数组拍平成一维数组
+   * 两个方法意在把 children 数组拍平成一维数组，具体分析查看
    */
   if (normalizationType === ALWAYS_NORMALIZE) {
     children = normalizeChildren(children)

@@ -9,4 +9,8 @@ import platformModules from 'web/runtime/modules/index'
 // built-in modules have been applied.
 const modules = platformModules.concat(baseModules)
 
+/*
+ * zrefrain
+ * 视频和配套文档上说 createPatchFunction 是一种函数柯里化，不懂...
+ */
 export const patch: Function = createPatchFunction({ nodeOps, modules })
