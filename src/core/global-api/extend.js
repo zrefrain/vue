@@ -40,6 +40,15 @@ export function initExtend (Vue: GlobalAPI) {
     Sub.prototype = Object.create(Super.prototype)
     Sub.prototype.constructor = Sub
     Sub.cid = cid++
+    /**
+     * zrefrain
+     * 突然意识到 mergeOptions 里有其在 option.js 中的全局变量，但这里使用只引入了 mergeOptions
+     * 且其全局变量是在 export 外声明和赋值的，那么为什么单引入 mergeOptions 就能访问到该全局变量呢？
+     * 遂去翻阅 ES6 文档，特有几点记录一下 https://es6.ruanyifeng.com/#docs/module#import-%E5%91%BD%E4%BB%A4
+     * 1. export 输出的接口，其值可以动态绑定
+     * 2. import 输入的变量都是只读的，不允许在加载后改变量，但如果是对象，可以改写属性（会造成追溯困难，不推荐这么做）
+     * 3. import 语句会执行所加载的模块（所以 mergeOptions 的全局变量赋值没有问题）
+     */
     Sub.options = mergeOptions(
       Super.options,
       extendOptions

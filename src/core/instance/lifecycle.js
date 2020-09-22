@@ -21,6 +21,11 @@ import {
 export let activeInstance: any = null
 export let isUpdatingChildComponent: boolean = false
 
+/**
+ * zrefrain
+ * 文档上介绍道 preActiveInstance、activeInstance 和深度遍历有关
+ * 自己不懂深度遍历的要点，所以不懂这块的概念，不懂为什么要这么写
+ */
 export function setActiveInstance(vm: Component) {
   const prevActiveInstance = activeInstance
   activeInstance = vm

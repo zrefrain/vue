@@ -120,7 +120,8 @@ export function createComponent (
   // plain options object: turn it into a constructor
   /**
    * zrefrain
-   * Ctor 为组件构造器
+   * Ctor extend 前为某个组件文件 export 出来的对象（compiled 解析后会加上一些属性，如 render、beforeCreate 等）
+   * extend 后为组件的构造函数，之前的 Ctor 各个属性合并到构造函数 Ctor 的 options 上
    */
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
