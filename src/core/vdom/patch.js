@@ -209,6 +209,9 @@ export function createPatchFunction (backend) {
         /**
          * zrefrain
          * insert 是插入节点的方法
+         *
+         * 补充：这里是把递归完 children，且 insert 到 vnode.elm 中后，再把 vnode.elm insert 到他的 parentElm 上
+         * 这里文字自己很难说明，在分析源码的案例中打个断点去观察可以更好地理解（自己理解递归还是比较吃力，得多练）
          */
         insert(parentElm, vnode.elm, refElm)
       }
@@ -226,6 +229,11 @@ export function createPatchFunction (backend) {
   }
 
   function createComponent (vnode, insertedVnodeQueue, parentElm, refElm) {
+    /**
+     * zrefrain
+     * create-component.js 中的 installComponentHooks 函数有把钩子函数合并到 data.hook 上
+     * 所以如果是组件 Vnode，其 data 一定是有值的
+     */
     let i = vnode.data
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
@@ -758,6 +766,10 @@ export function createPatchFunction (backend) {
           }
           // either not server-rendered, or hydration failed.
           // create an empty node and replace it
+          /**
+           * zrefrain
+           * 把 oldVnode 从 DOM 节点转化为一个 Vnode 节点，oldNode.elm 就是原来的 DOM 节点
+           */
           oldVnode = emptyNodeAt(oldVnode)
         }
 

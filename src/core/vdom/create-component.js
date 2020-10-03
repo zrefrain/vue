@@ -122,6 +122,10 @@ export function createComponent (
    * zrefrain
    * Ctor extend 前为某个组件文件 export 出来的对象（compiled 解析后会加上一些属性，如 render、beforeCreate 等）
    * extend 后为组件的构造函数，之前的 Ctor 各个属性合并到构造函数 Ctor 的 options 上
+   *
+   * 补充：组件注册笔记
+   * isObject 函数内容为 obj !== null && typeof obj === 'object'
+   * 组件注册进来 Ctor 为函数，typeof function(){} 的值为 'function'，所以不会再走一次 extend
    */
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)

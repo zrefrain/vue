@@ -465,6 +465,10 @@ export function resolveAsset (
    * 解释下下面为什么是找一遍原型链
    * 因为 hasOwn 使用的是 Object.prototype.hasOwnProperty 方法，不查找原型链上的属性
    * 所以下面的操作叫找一遍原型链（注意，上面的 if 判断，如果是原型链上的属性，是不会进入 if 语句的）
+   *
+   * 🤔为什么要去原型链上查找一遍？
+   * 解答自己，因为在 mergeOptions 时，components 的合并策略函数是本文件内的 mergeAssets
+   * 其中有一句 res = Object.create(parentVal || null)，就是返回了一个原型为 parentVal 的新对象
    */
   // fallback to prototype chain
   const res = assets[id] || assets[camelizedId] || assets[PascalCaseId]
