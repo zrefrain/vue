@@ -44,6 +44,10 @@ export function resolveAsyncComponent (
   factory: Function,
   baseCtor: Class<Component>
 ): Class<Component> | void {
+  /**
+   * zrefrain
+   * 注意看 error、resolved、loading 这几个判断的顺序
+   */
   if (isTrue(factory.error) && isDef(factory.errorComp)) {
     return factory.errorComp
   }
@@ -52,6 +56,12 @@ export function resolveAsyncComponent (
     return factory.resolved
   }
 
+  /**
+   * zrefrain
+   * resolveAsyncComponent 这个函数改变了，少了个 context 参数，用来传递当前实例的
+   * context 变成了 currentRenderingInstance，在 _render 方法中赋值和 export 出来
+   * owner 和 owners 相关的逻辑，就是之前 context 和 contexts 的逻辑
+   */
   const owner = currentRenderingInstance
   if (owner && isDef(factory.owners) && factory.owners.indexOf(owner) === -1) {
     // already pending
@@ -88,8 +98,18 @@ export function resolveAsyncComponent (
       }
     }
 
+    /**
+     * zrefrain
+     * once 中有用到 this，回顾下箭头函数 this 的绑定规则，箭头函数根据外层（函数/全局）作用域来决定，不受其他影响
+     * once 的作用：保护 resolve 方法，如果多次调用只执行一次
+     */
     const resolve = once((res: Object | Class<Component>) => {
       // cache resolved
+      /**
+       * zrefrain
+       * 接收到异步组件，把其转化为组件构造函数并缓存，在 forceRender 中调用 $forceUpdate
+       * 然后会执行 vm._update 再一次进入 createComponent，进入到本方法内，然后取 factory.resolved 缓存的构造函数
+       */
       factory.resolved = ensureCtor(res, baseCtor)
       // invoke callbacks only if this is not a synchronous resolve
       // (async resolves are shimmed as synchronous during SSR)
@@ -111,15 +131,30 @@ export function resolveAsyncComponent (
       }
     })
 
+    /**
+     * 注意 factory 是异步函数，所以下面的同步代码会先执行
+     * 当 factory 为工厂函数，res 为 undefined
+     * 当 factory 为 import() 函数，import() 函数返回一个 Promise 对象，res 为一个对象
+     */
     const res = factory(resolve, reject)
 
     if (isObject(res)) {
       if (isPromise(res)) {
+        /**
+         * zrefrain
+         * import() 方法时进入该判断，在 then 中调用 resolve 去解析 import() 回的对象（跟工厂函数 require 返回的一样）
+         */
         // () => Promise
         if (isUndef(factory.resolved)) {
           res.then(resolve, reject)
         }
       } else if (isPromise(res.component)) {
+        /**
+         * zrefrain
+         * 异步组件工厂函数高级用法
+         * 首先把传入的 error、loading 转化为组件构造函数绑定到 factory 属性上，然后设置相对应到 setTimeout 函数
+         * 然后到设置的时间，执行定时器内的 forceRender 函数，再执行函数最上面的判断去决定是渲染 loading 还是 error or resolve
+         */
         res.component.then(resolve, reject)
 
         if (isDef(res.error)) {

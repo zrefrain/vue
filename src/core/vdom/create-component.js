@@ -140,6 +140,10 @@ export function createComponent (
     return
   }
 
+  /**
+   * zrefrain
+   * 异步组件（工厂函数）没有 cid，cid 的声明在 Vue.extend 中
+   */
   // async component
   let asyncFactory
   if (isUndef(Ctor.cid)) {
