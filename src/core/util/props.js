@@ -121,6 +121,10 @@ function assertProp (
     if (!Array.isArray(type)) {
       type = [type]
     }
+    /**
+     * zrefrain
+     * 如果 type 有两个，那么 value 只要满足一个就可以了（注意 for 循环的 !valid 判断）
+     */
     for (let i = 0; i < type.length && !valid; i++) {
       const assertedType = assertType(value, type[i])
       expectedTypes.push(assertedType.expectedType || '')
@@ -157,6 +161,10 @@ function assertType (value: any, type: Function): {
   if (simpleCheckRE.test(expectedType)) {
     const t = typeof value
     valid = t === expectedType.toLowerCase()
+    /**
+     * zrefrain
+     * 校验值为 new Boolean(true) 的情况
+     */
     // for primitive wrapper objects
     if (!valid && t === 'object') {
       valid = value instanceof type

@@ -181,6 +181,10 @@ export const capitalize = cached((str: string): string => {
 /**
  * Hyphenate a camelCase string.
  */
+/**
+ * zrefrain
+ * 自己理解：加 \B 匹配非单词边界，是为了不把大写到首字母匹配到
+ */
 const hyphenateRE = /\B([A-Z])/g
 export const hyphenate = cached((str: string): string => {
   return str.replace(hyphenateRE, '-$1').toLowerCase()
