@@ -21,6 +21,10 @@ import platformComponents from './components/index'
 
 // install platform specific utils
 Vue.config.mustUseProp = mustUseProp
+/**
+ * zrefrain 自己
+ * 平台相关的 config 在这里进行修改，原 isReservedTag 对应的是 no 函数
+ */
 Vue.config.isReservedTag = isReservedTag
 Vue.config.isReservedAttr = isReservedAttr
 Vue.config.getTagNamespace = getTagNamespace

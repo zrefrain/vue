@@ -22,6 +22,12 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   // config
   const configDef = {}
   configDef.get = () => config
+  /**
+   * zrefrain 自己
+   * 这里的 set 只是针对修改 config 属性时警告，如 Vue.config = 1 时会警告
+   * 在 platform/web/runtime/index.js 中 Vue.config.isReservedTag 修改 isReservedTag 的方式是没问题的
+   * 下面的英文注释也描述得很清楚
+   */
   if (process.env.NODE_ENV !== 'production') {
     configDef.set = () => {
       warn(

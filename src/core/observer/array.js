@@ -8,6 +8,10 @@ import { def } from '../util/index'
 const arrayProto = Array.prototype
 export const arrayMethods = Object.create(arrayProto)
 
+/**
+ * zrefrain 自己
+ * 这些都是可以修改原数据的数组方法
+ */
 const methodsToPatch = [
   'push',
   'pop',
